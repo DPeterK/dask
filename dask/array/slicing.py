@@ -982,6 +982,10 @@ def slice_with_bool_dask_array(x, index):
     """
     from .core import Array, atop, elemwise
 
+    if np.isnan(x.chunks).any():
+        raise NotImplementedError("Slicing an array with unknown chunks with "
+                                  "a dask.array of bools is not supported")
+
     out_index = [slice(None)
                  if isinstance(ind, Array) and ind.dtype == bool
                  else ind
